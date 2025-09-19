@@ -6,12 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "agi_list.h"
+#include "gllist.h"
 
 // --------------------------------------------------
 // Initialize list
 // --------------------------------------------------
-void list_init(AgiList *list) {
+void list_init(gllist *list) {
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;
@@ -21,7 +21,7 @@ void list_init(AgiList *list) {
 // Push data at the tail
 // Return 0 on success, -1 on failure
 // -------------------------------------------------
-int list_push_back(AgiList *list, void *data) {
+int list_push_back(gllist *list, void *data) {
 
 	Node *new_node = (Node *)malloc(sizeof(Node));
 	if (!new_node) return -1; // allocation failed
@@ -45,7 +45,7 @@ int list_push_back(AgiList *list, void *data) {
 // Add element at the beginning of the list
 // Return 0 on success, -1 on failure
 // -------------------------------------------------
-int list_push_front(AgiList *list, void *data) {
+int list_push_front(gllist *list, void *data) {
     // allocate new node
     Node *new_node = (Node *)malloc(sizeof(Node));
     if (new_node == NULL) {
@@ -75,7 +75,7 @@ int list_push_front(AgiList *list, void *data) {
 // Remove and return the element at the beginning of the list
 // Return pointer to user data, or NULL if the list is empty
 // -------------------------------------------------
-void *list_pop_front(AgiList *list) {
+void *list_pop_front(gllist *list) {
     // check if the list is empty
     if (list->head == NULL) {
         return NULL;
@@ -110,7 +110,7 @@ void *list_pop_front(AgiList *list) {
 // Remove and return the element at the end of the list
 // Return pointer to user data, or NULL if the list is empty
 // -------------------------------------------------
-void *list_pop_back(AgiList *list) {
+void *list_pop_back(gllist *list) {
     // check if the list is empty
     if (list->tail == NULL) {
         return NULL;
@@ -145,7 +145,7 @@ void *list_pop_back(AgiList *list) {
 // Destroy the entire list (frees all nodes, but not user data)
 // After this call, the list is empty and can be reused
 // -------------------------------------------------
-void list_destroy(AgiList *list) {
+void list_destroy(gllist *list) {
     Node *current = list->head;
     Node *next_node;
 
@@ -166,7 +166,7 @@ void list_destroy(AgiList *list) {
 // Debug function: print all integers in the list
 // Assumes that data pointers are of type (int *)
 // -------------------------------------------------
-void list_print_int(const AgiList *list) {
+void list_print_int(const gllist *list) {
     const Node *current = list->head;
 
     printf("List size: %zu\n", list->size);
