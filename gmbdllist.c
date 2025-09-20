@@ -73,14 +73,14 @@ static void pool_free_node(gmbdll_Pool *pool, gmbdll_Node *node) {
    --------------------------- */
 
 /* Initialize pool object. Must be called before using the pool. */
-int gmbd_pool_init(gmbdll_Pool *pool) {
+int gmbdll_pool_init(gmbdll_Pool *pool) {
     if (!pool) return gmbdll_ERR;
     pool_init(pool);
     return gmbdll_OK;
 }
 
 /* Initialize a list and attach pool to it. pool must be valid and initialized. */
-int gmbd_list_init(gmbdll_List *list, gmbdll_Pool *pool) {
+int gmbdll_list_init(gmbdll_List *list, gmbdll_Pool *pool) {
     if (!list || !pool) return gmbdll_ERR;
     list->head = NULL;
     list->tail = NULL;
@@ -90,19 +90,19 @@ int gmbd_list_init(gmbdll_List *list, gmbdll_Pool *pool) {
 }
 
 /* Return 1 if list empty, 0 otherwise */
-int gmbd_list_is_empty(const gmbdll_List *list) {
+int gmbdll_list_is_empty(const gmbdll_List *list) {
     if (!list) return 1;
     return (list->size == 0);
 }
 
 /* Return current size */
-size_t gmbd_list_size(const gmbdll_List *list) {
+size_t gmbdll_list_size(const gmbdll_List *list) {
     if (!list) return 0;
     return list->size;
 }
 
 /* Push at front. Returns 0 on success, -1 on failure (pool exhausted). */
-int gmbd_list_push_front(gmbdll_List *list, void *data) {
+int gmbdll_push_front(gmbdll_List *list, void *data) {
     if (!list || !list->pool) return gmbdll_ERR;
     gmbdll_Node *node = pool_alloc_node(list->pool);
     if (!node) return gmbdll_ERR;
@@ -121,7 +121,7 @@ int gmbd_list_push_front(gmbdll_List *list, void *data) {
 }
 
 /* Push at back. Returns 0 on success, -1 on failure (pool exhausted). */
-int gmbd_list_push_back(gmbdll_List *list, void *data) {
+int gmbdll_push_back(gmbdll_List *list, void *data) {
     if (!list || !list->pool) return gmbdll_ERR;
     gmbdll_Node *node = pool_alloc_node(list->pool);
     if (!node) return gmbdll_ERR;
@@ -140,7 +140,7 @@ int gmbd_list_push_back(gmbdll_List *list, void *data) {
 }
 
 /* Pop from front. Returns data pointer or NULL if empty. */
-void *gmbd_list_pop_front(gmbdll_List *list) {
+void *gmbdll_pop_front(gmbdll_List *list) {
     if (!list || !list->head) return NULL;
     gmbdll_Node *old = list->head;
     void *data = old->data;
@@ -158,7 +158,7 @@ void *gmbd_list_pop_front(gmbdll_List *list) {
 }
 
 /* Pop from back. Returns data pointer or NULL if empty. */
-void *gmbd_list_pop_back(gmbdll_List *list) {
+void *gmbdll_pop_back(gmbdll_List *list) {
     if (!list || !list->tail) return NULL;
     gmbdll_Node *old = list->tail;
     void *data = old->data;
@@ -177,7 +177,7 @@ void *gmbd_list_pop_back(gmbdll_List *list) {
 /* Generic find: returns pointer to node or NULL.
    cmp callback: returns 0 if equal, non-zero otherwise.
    key is passed to cmp. */
-gmbdll_Node *gmbd_list_find(gmbdll_List *list, int (*cmp)(const void *item, const void *key), const void *key) {
+gmbdll_Node *gmbdll_list_find(gmbdll_List *list, int (*cmp)(const void *item, const void *key), const void *key) {
     if (!list || !cmp) return NULL;
     gmbdll_Node *cur = list->head;
     while (cur) {
@@ -191,7 +191,7 @@ gmbdll_Node *gmbd_list_find(gmbdll_List *list, int (*cmp)(const void *item, cons
 
 /* Remove a node given its pointer. If data_out != NULL, store the data pointer there.
    Returns 0 on success, -1 if node or list invalid. */
-int gmbd_list_remove_node(gmbdll_List *list, gmbdll_Node *node, void **data_out) {
+int gmbdll_list_remove_node(gmbdll_List *list, gmbdll_Node *node, void **data_out) {
     if (!list || !node) return gmbdll_ERR;
 
     /* Verify node belongs to this list is omitted for speed in embedded;
@@ -220,7 +220,7 @@ int gmbd_list_remove_node(gmbdll_List *list, gmbdll_Node *node, void **data_out)
 
 /* Clear list. If free_func != NULL, it is called for each data pointer.
    This frees all nodes back to the pool and resets list to empty. */
-void gmbd_list_clear(gmbdll_List *list, void (*free_func)(void *)) {
+void gmbdll_list_clear(gmbdll_List *list, void (*free_func)(void *)) {
     if (!list) return;
     gmbdll_Node *cur = list->head;
     while (cur) {
@@ -237,12 +237,12 @@ void gmbd_list_clear(gmbdll_List *list, void (*free_func)(void *)) {
 }
 
 /* Optional: expose pool statistics */
-size_t gmbd_pool_capacity(const gmbdll_Pool *pool) {
+size_t gmbdll_pool_capacity(const gmbdll_Pool *pool) {
     if (!pool) return 0;
     return pool->capacity;
 }
 
-size_t gmbd_pool_used(const gmbdll_Pool *pool) {
+size_t gmbdll_pool_used(const gmbdll_Pool *pool) {
     if (!pool) return 0;
     return pool->used;
 }

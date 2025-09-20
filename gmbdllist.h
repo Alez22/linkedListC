@@ -46,8 +46,17 @@ typedef struct {
  * API
  * ================================ */
 
+/* Initialize pool object. Must be called before using the pool. */
+int gmbdll_pool_init(gmbdll_Pool *pool);
+
 /* Initialize list and associate with a pool */
-void gmbdll_init(gmbdll_List *list, gmbdll_Pool *pool);
+void gmbdll_list_init(gmbdll_List *list, gmbdll_Pool *pool);
+
+/* Return 1 if list empty, 0 otherwise */
+int gmbdll_list_is_empty(const gmbdll_List *list);
+
+/* Return current size */
+size_t gmbdll_list_size(const gmbdll_List *list);
 
 /* Push element at the beginning of the list */
 int gmbdll_push_front(gmbdll_List *list, gmbdll_Pool *pool, void *data);
@@ -60,6 +69,16 @@ void *gmbdll_pop_front(gmbdll_List *list, gmbdll_Pool *pool);
 
 /* Pop element from the end of the list */
 void *gmbdll_pop_back(gmbdll_List *list, gmbdll_Pool *pool);
+
+/* Generic find: returns pointer to node or NULL.
+   cmp callback: returns 0 if equal, non-zero otherwise.
+   key is passed to cmp. */
+gmbdll_Node *gmbdll_list_find(gmbdll_List *list, \
+int (*cmp)(const void *item, const void *key), const void *key); 
+
+/* Remove a node given its pointer. If data_out != NULL, store the data pointer there.
+   Returns 0 on success, -1 if node or list invalid. */
+int gmbdll_list_remove_node(gmbdll_List *list, gmbdll_Node *node, void **data_out);
 
 /* Destroy list (frees all nodes, does not free user data) */
 void gmbdll_destroy(gmbdll_List *list, gmbdll_Pool *pool);
