@@ -1,4 +1,4 @@
-/*
+/*=================================================================
  * gmbdllist.c
  * Embedded-friendly doubly-linked list using a fixed node pool.
  *
@@ -7,22 +7,9 @@
  *
  * Author: Alessandro Giuliani
  * Date: September 2025
- * 
- */
+ *=============================================================== */
 
-#include <stddef.h>  // size_t, NULL
-#include "gmbdllist.h" // declare types and prototypes
-
-/* ---------------------------
-   Internal helper macros
-   --------------------------- */
-#ifndef gmbdll_POOL_MAX_NODES
-#define gmbdll_POOL_MAX_NODES 64
-#endif
-
-/* Return codes */
-#define gmbdll_OK    0
-#define gmbdll_ERR  -1
+ #include "gmbdllist.h" // declare types and prototypes
 
 /* ---------------------------
    Internal (static) functions
@@ -32,7 +19,7 @@
 static void pool_init(gmbdll_Pool *pool) {
     if (!pool) return;
     pool->free_list = NULL;
-    pool->capacity = gmbdll_POOL_MAX_NODES;
+    pool->capacity = GMB_DLLIST_MAX_NODES;
     pool->used = 0;
     /* Link all nodes into free list */
     for (size_t i = 0; i < pool->capacity; ++i) {
@@ -245,6 +232,29 @@ size_t gmbdll_pool_capacity(const gmbdll_Pool *pool) {
 size_t gmbdll_pool_used(const gmbdll_Pool *pool) {
     if (!pool) return 0;
     return pool->used;
+}
+
+/* Debug: print list of integers (for testing only) */
+void gmbdll_print_int(const gmbdll_List *list) {
+    if (list == NULL || list->head == NULL) {
+        printf("[empty]\n");
+        return;
+    }
+
+    const gmbdll_Node *current = list->head;
+    printf("List (%zu elements): ", list->size);
+
+    while (current != NULL) {
+        int *value = (int *)current->data;
+        if (value != NULL) {
+            printf("%d ", *value);
+        } else {
+            printf("(null) ");
+        }
+        current = current->next;
+    }
+
+    printf("\n");
 }
 
 /* End of file */
