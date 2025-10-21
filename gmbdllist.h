@@ -46,7 +46,7 @@ typedef struct gmbdll_Pool{
     gmbdll_Node nodes[GMB_DLLIST_MAX_NODES];
     gmbdll_Node *free_list;  /* List of free nodes */
     size_t capacity;  /* Total capacity of the pool */
-    size_t used;  /* 0 = free, 1 = used */
+    size_t used;  /* Number of nodes currently in use */
 } gmbdll_Pool;
 
 /* Linked list structure */

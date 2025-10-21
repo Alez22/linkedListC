@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "agi_list.h"
+#include "gllist.h"
 
 // -------------------------------------------------
 // Simple test program for the linked list library
 // -------------------------------------------------
 int main(void) {
-    AgiList list;
+    gllist list;
     list_init(&list);
 
     printf("=== Linked List Test ===\n");
